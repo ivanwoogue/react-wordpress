@@ -11,7 +11,9 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { useRouter } from '@tanstack/react-router';
 import * as React from 'react';
+import { useLogin } from '../api/auth';
 import Link from '../components/Link';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
@@ -19,6 +21,8 @@ import { SitemarkIcon } from './components/CustomIcons';
 import ForgotPassword from './components/ForgotPassword';
 
 export default function SignIn(props: { disableCustomTheme?: boolean }) {
+  const router = useRouter();
+
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
@@ -33,16 +37,21 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     setOpen(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (emailError || passwordError) {
-      event.preventDefault();
       return;
     }
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const response = await useLogin(
+      data.get('email') as string,
+      data.get('password') as string
+    );
+
+    if(response.success) {
+      router.navigate({ to: '/' });
+    }
   };
 
   const validateInputs = () => {
@@ -60,7 +69,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       setEmailErrorMessage('');
     }
 
-    if (!password.value || password.value.length < 6) {
+    if (!password.value || password.value.length < 3) {
       setPasswordError(true);
       setPasswordErrorMessage('Password must be at least 6 characters long.');
       isValid = false;
@@ -71,6 +80,17 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
     return isValid;
   };
+
+  React.useEffect(() => {
+    // const login = async () => {
+    //   const response = await useLogin('user1@gmail.com', 'user1');
+    //   console.log('Login response:', response); 
+    //   if (response.success) {
+    //     router.navigate({to: '/'}); 
+    //   }
+    // };
+    // login();
+  }, []);
 
   return (
     <AppTheme {...props}>

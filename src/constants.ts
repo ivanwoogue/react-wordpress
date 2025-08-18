@@ -1,0 +1,3 @@
+const SESSION_KEY_TOKEN = "ACCESS_TOKEN";
+
+export { SESSION_KEY_TOKEN };
