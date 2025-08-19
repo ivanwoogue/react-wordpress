@@ -1,11 +1,8 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import MuiCard from '@mui/material/Card';
-import Checkbox from '@mui/material/Checkbox';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
@@ -14,11 +11,11 @@ import Typography from '@mui/material/Typography';
 import { useRouter } from '@tanstack/react-router';
 import * as React from 'react';
 import { useLogin } from '../api/auth';
+import Card from '../components/Card';
 import Link from '../components/Link';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import { SitemarkIcon } from './components/CustomIcons';
-import ForgotPassword from './components/ForgotPassword';
 
 export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const router = useRouter();
@@ -81,17 +78,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     return isValid;
   };
 
-  React.useEffect(() => {
-    // const login = async () => {
-    //   const response = await useLogin('user1@gmail.com', 'user1');
-    //   console.log('Login response:', response); 
-    //   if (response.success) {
-    //     router.navigate({to: '/'}); 
-    //   }
-    // };
-    // login();
-  }, []);
-
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
@@ -151,11 +137,11 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 color={passwordError ? 'error' : 'primary'}
               />
             </FormControl>
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
-            <ForgotPassword open={open} handleClose={handleClose} />
+            /> */}
+            {/* <ForgotPassword open={open} handleClose={handleClose} /> */}
             <Button
               type="submit"
               fullWidth
@@ -164,7 +150,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             >
               Sign in
             </Button>
-            <Link
+            {/* <Link
               to='/'
               component="button"
               type="button"
@@ -173,7 +159,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               sx={{ alignSelf: 'center' }}
             >
               Forgot your password?
-            </Link>
+            </Link> */}
           </Box>
           <Divider>or</Divider>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -193,25 +179,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     </AppTheme>
   );
 }
-
-const Card = styled(MuiCard)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignSelf: 'center',
-  width: '100%',
-  padding: theme.spacing(4),
-  gap: theme.spacing(2),
-  margin: 'auto',
-  [theme.breakpoints.up('sm')]: {
-    width: '450px',
-  },
-  boxShadow:
-    'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
-  ...theme.applyStyles('dark', {
-    boxShadow:
-      'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
-  }),
-}));
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
   height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
