@@ -1,0 +1,49 @@
+services:
+  wordpress:
+    depends_on:
+      - database
+    image: wordpress:php8.3-apache
+    container_name: wordpress
+    volumes:
+      - ./wordpress:/var/www/html
+      - ./wordpress/wp-content:/var/www/html/wp-content
+      # - ./apache.conf:/etc/apache2/conf-enabled/cors.conf # In case there is a cors error
+    ports:
+      - "10003:80"
+    environment:
+      WORDPRESS_DB_HOST: database:3306 # use the same name as database service
+      WORDPRESS_DB_NAME: '${MYSQL_DATABASE}'
+      WORDPRESS_DB_USER: '${MYSQL_USER}'
+      WORDPRESS_DB_PASSWORD: '${MYSQL_PASSWORD}'
+    restart: unless-stopped
+    networks:
+      - wordpress-network
+
+  database:
+    # We use a mariadb image which supports both amd64 & arm64 architecture
+    image: mariadb:10.6.4-focal
+    container_name: database
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    env_file: .env
+    environment:
+      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+      MYSQL_DATABASE: '${MYSQL_DATABASE}'
+      MYSQL_USER: '${MYSQL_USER}'
+      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - wordpress-network
+    deploy:
+      resources:
+        limits:
+          memory: 2048m
+
+volumes:
+  db-data:
+
+networks:
+  wordpress-network:
+    driver: bridge
