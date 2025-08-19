@@ -40,7 +40,7 @@ docker compose up -d
 3. Under Login settings, ensure it is log in by email and email is the JWT parameter key
 4. Under Register User, allow it.
 5. Under Authentication, allow it. For the payload parameters, make sure email is selected because it is the JWT parameter key that the authentication will be based on.
-6. Under Auth Codes, the Authentication Key must be eqwal to AUTH_CODES in src/api/constants.ts file
+6. Under Auth Codes, the Authentication Key must be eqwal to AUTH_CODE in src/api/constants.ts file
 7. Under CORS, enable everything.
 
 ## Note
